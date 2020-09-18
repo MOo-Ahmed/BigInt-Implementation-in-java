@@ -15,19 +15,7 @@ public class App {
 
 
     }
-/*
-    - To move from start -> make p even (by decreasing if odd)
-        Then divide p / 2 
 
-    - To move from the end -> 
-        - if n is even : 
-            - if p is even -> (n-p)/2
-            - if p is odd -> (n-p+1)/2
-        - if n is odd :
-            - if p is even :  (n-p+1) / 2
-            - if p is odd -> (n-p) / 2 
-
-*/
     public static void tryBigInt(){
         BigINT a = new BigINT(new StringBuffer("0")) ;
         BigINT b = new BigINT (new StringBuffer("22")) ;
