@@ -115,17 +115,17 @@ public class BigINT {
     
     public BigINT multiply (BigINT num2) {
 		BigINT result = new BigINT (new StringBuffer("0")) ;
-		int n1 = Integer.parseInt(this.expression.toString()) ;
-		int n2 = Integer.parseInt(num2.expression.toString()) ;
-		if(n1 == 0 || n2 == 0)	return result ;
+		String n1 = this.expression.toString() ;
+		String n2 = num2.expression.toString() ;
+		if(n1 == "0" || n2 == "0")	return result ;
         ArrayList<BigINT> list1 = divideNumber() ;
 		ArrayList<BigINT> list2 =  num2.divideNumber() ;
-		//System.out.println(list1 + " / " + list2);
+		//System.out.println("\t" + list2);
 		for(int i = 0 ; i < list1.size() ; i++){
             for(int j = 0 ; j < list2.size() ; j++){
                 //System.out.println("i = " + i + " - j = " + j);
 				//System.out.println("Before :  " + list1.get(i).expression + "  -  " + list2.get(j).expression);
- 
+				//System.out.println("\t" + list2);
 				StringBuffer exp1 = new  StringBuffer();
 				exp1.append(list1.get(i).expression);
 				StringBuffer exp2 = new  StringBuffer() ;
@@ -152,6 +152,7 @@ public class BigINT {
     }
 
     public BigINT MakeSimpleMultiplication(BigINT num2){
+		//System.out.println("When it got in : " + num2);
         BigINT tempNumber = new BigINT(new StringBuffer("")) ;
         int numOfZeros1 = this.countNumberOfConsecutiveZeros() ;
         int numOfZeros2 = num2.countNumberOfConsecutiveZeros() ;
@@ -160,7 +161,8 @@ public class BigINT {
         int numOfZeros = numOfZeros1 + numOfZeros2 ;
         for(int i = 0 ; i < numOfZeros ; i++) {   
             tempNumber.expression.append("0") ;
-        }
+		}
+		//System.out.println("exp1 = " + this + " -  exp2 = " + num2);
         int n1 = Integer.parseInt(this.expression.toString()) ;
         int n2 = Integer.parseInt(num2.expression.toString()) ;
         int result = n1 * n2 ;
@@ -170,6 +172,7 @@ public class BigINT {
     }
 
     public void eliminateZeros (int n){
+		if(expression.length() == 1)	return ;
         this.expression.reverse() ;
         this.expression.delete(0, n) ;
         this.expression.reverse() ;
@@ -194,6 +197,8 @@ public class BigINT {
     }
     
     public int countNumberOfConsecutiveZeros(){
+		String val = expression.toString() ;
+		if(val.endsWith("0") && val.startsWith("0"))	return 0 ;
         this.expression.reverse() ;
         int count = 0 ;
         for (int i = 0 ; i < this.expression.length(); i++){
@@ -211,14 +216,36 @@ public class BigINT {
 
     public BigINT factorial () {
 		BigINT result = new BigINT(new StringBuffer(""));
-		
-		
-		
+		int value = Integer.parseInt(this.expression.toString()) ;
+		if(value <= 9){
+			result.expression.setLength(0);
+			result.expression.append(simpleFactorial().expression) ;
+			return result; 
+		}
+		else{
+			int value2 = value-1 ;
+			result.expression.setLength(0);
+			result.expression.append(String.valueOf(value2)) ;
+			return this.multiply(result.factorial()) ;
+		}
+	}
+
+	private BigINT simpleFactorial(){
+		BigINT result = new BigINT(new StringBuffer(""));
+		int value = Integer.parseInt(expression.toString()) ;
+		int smallFactorial = measureFactorial(value) ;
+		result.expression.setLength(0);
+		result.expression.append(String.valueOf(smallFactorial)) ;
 		return result ;
+	}
+
+	private int measureFactorial(int n){
+		if(n==1)	return 1 ;
+		else	return n * measureFactorial(n-1) ;
 	}
     
     private void clean() {
-		if (this.expression.charAt(0) == '0') {
+		if (this.expression.charAt(0) == '0' && this.expression.length() > 1) {
 			this.expression = expression.deleteCharAt(0) ;
 		}
 	}
